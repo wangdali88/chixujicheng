@@ -1,0 +1,128 @@
+{
+	"info": {
+		"_postman_id": "1a09a631-ff7a-4160-a660-c20cc1d19570",
+		"name": "Cnode",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "发帖",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "7b819139-5090-4ff2-af91-3d715c6c44a7",
+						"exec": [
+							"pm.environment.set(\"title\", \"123456\");",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "f7045f49-1048-4fab-b665-9f9619e1daee",
+						"exec": [
+							"",
+							"",
+							"",
+							"pm.test(\"服务器相应结果 success字段值为true\",function(){",
+							"    //",
+							"    var jsondata = pm.response.json();",
+							"    console.log(jsondata['success'])",
+							"    ",
+							"    pm.expect(jsondata['success']).to.eql(true);",
+							"    ",
+							"    console.log('topic_id'+jsondata['topic_id'])",
+							"    pm.globals.set(\"topic_id\",jsondata['topic_id']);",
+							"    ",
+							"})",
+							"",
+							"// pm.test(\"\", function () {",
+							"//     var jsonData = pm.response.json();",
+							"//     pm.expect(jsonData.value).to.eql(100);",
+							"// });    ",
+							"    ",
+							"    ",
+							"    ",
+							"",
+							"    ",
+							"    ",
+							"    "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "accesstoken",
+							"value": "3333a0fb-6dd8-439e-813b-2c3a5213a154",
+							"type": "text"
+						},
+						{
+							"key": "title",
+							"value": "{{title}}",
+							"type": "text"
+						},
+						{
+							"key": "tab",
+							"value": "{{tab}}",
+							"type": "text"
+						},
+						{
+							"key": "content",
+							"value": "{{content}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/topics",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"topics"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "主题详情",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/topic/{{topic_id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"topic",
+						"{{topic_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
