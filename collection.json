@@ -27,9 +27,16 @@
 							"",
 							"",
 							"",
+							" var jsondata = pm.response.json();",
+							" ",
+							" var status = pm.variables.get(\"status\"); ",
+							"if(status == 'success'){",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
 							"pm.test(\"服务器相应结果 success字段值为true\",function(){",
 							"    //",
-							"    var jsondata = pm.response.json();",
+							"   ",
 							"    console.log(jsondata['success'])",
 							"    ",
 							"    pm.expect(jsondata['success']).to.eql(true);",
@@ -38,6 +45,18 @@
 							"    pm.globals.set(\"topic_id\",jsondata['topic_id']);",
 							"    ",
 							"})",
+							"}",
+							"if(status == 'fail'){",
+							"    pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"}",
+							" ",
+							"",
+							"",
+							"",
+							"",
+							"",
 							"",
 							"// pm.test(\"\", function () {",
 							"//     var jsonData = pm.response.json();",
@@ -104,21 +123,66 @@
 		},
 		{
 			"name": "主题详情",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7f4e131e-5f63-4c7a-bbe6-bef95573659c",
+						"exec": [
+							"",
+							"var jsonData = pm.response.json();",
+							"var status = pm.variables.get(\"status\");",
+							"",
+							"//期望值",
+							"var expect_title = pm.variables.get(\"title\"); ",
+							"var expect_tab = pm.variables.get(\"tab\"); ",
+							"var expect_content = pm.variables.get(\"content\"); ",
+							"//服务器实际返回值",
+							"var title = jsonData['data']['title']",
+							"var tab = jsonData['data']['tab']",
+							"var content = jsonData['data']['content']",
+							"",
+							"",
+							"if(status == 'success'){",
+							"pm.test('验证主题详情的服务器返回值与csv文件中一致', function () {",
+							"    // var jsonData = pm.response.json();",
+							"    pm.expect(expect_title).to.eql(title);",
+							"    pm.expect(expect_tab).to.eql(tab);",
+							"    pm.expect(expect_content).to.eql(content);",
+							"});}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {},
 				"url": {
-					"raw": "{{url}}/topic/{{topic_id}}",
+					"raw": "{{url}}/topic/{{topic_id}}?mdrender=false",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"topic",
 						"{{topic_id}}"
+					],
+					"query": [
+						{
+							"key": "mdrender",
+							"value": "false"
+						}
 					]
 				}
 			},
